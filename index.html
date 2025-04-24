@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Quiz Night</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Default Theme */
+      --bg-primary: #e0f2fe;
+      --bg-secondary: #bae6fd;
+      --text-primary: #1e3a8a;
+      --accent: #3b82f6;
+      --accent-light: #93c5fd;
+      --card-bg: rgba(255, 255, 255, 0.3);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --gradient: linear-gradient(135deg, #3b82f6, #60a5fa);
+    }
+    .theme-night {
+      --bg-primary: #1e293b;
+      --bg-secondary: #334155;
+      --text-primary: #f1f5f9;
+      --accent: #60a5fa;
+      --accent-light: #93c5fd;
+      --card-bg: rgba(51, 65, 85, 0.3);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      --gradient: linear-gradient(135deg, #60a5fa, #3b82f6);
+    }
+    .theme-fun {
+      --bg-primary: #fee2e2;
+      --bg-secondary: #fef2f2;
+      --text-primary: #b91c1c;
+      --accent: #f87171;
+      --accent-light: #fca5a5;
+      --card-bg: rgba(255, 255, 255, 0.3);
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+      --gradient: linear-gradient(135deg, #f87171, #fca5a5);
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: linear-gradient(135deg, var(--bg-primary), var(--bg-secondary));
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      transition: background 0.5s ease;
+    }
+    h1, h2, h3, h4 {
+      font-family: 'Poppins', sans-serif;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+      position: relative;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 600px;
+      height: 200px;
+      background: var(--gradient);
+      opacity: 0.1;
+      border-radius: 50%;
+      filter: blur(50px);
+    }
+    header h1 {
+      font-size: 3.5rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 1rem;
+    }
+    header p {
+      font-size: 1.25rem;
+      color: var(--text-primary);
+      opacity: 0.8;
+    }
+    .bounce-icon {
+      display: inline-block;
+      animation: bounce-slow 3s infinite ease-in-out;
+    }
+    @keyframes bounce-slow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    /* Theme Selector */
+    .theme-selector {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+    }
+    .theme-selector button {
+      padding: 0.75rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .theme-selector button:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+    }
+    .theme-selector button:active {
+      transform: translateY(0);
+    }
+    /* Game Selection */
+    .game-selection {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .game-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+    }
+    .game-card .icon {
+      width: 3rem;
+      height: 3rem;
+      background: var(--gradient);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      margin-right: 1rem;
+    }
+    .game-card h3 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .game-card p {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      opacity: 0.7;
+    }
+    .game-card .details {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      opacity: 0.6;
+      margin-top: 1rem;
+    }
+    /* Game Area */
+    .game-area {
+      display: none;
+    }
+    .game-area.active {
+      display: block;
+    }
+    .game-panel {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border-radius: 1.5rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      margin-bottom: 2rem;
+    }
+    /* Trivia Game */
+    .trivia-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .trivia-header span {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    #trivia-question {
+      font-size: 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .trivia-options {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    @media (min-width: 640px) {
+      .trivia-options {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .trivia-options button {
+      padding: 1rem;
+      font-size: 1rem;
+      background: var(--card-bg);
+      border: 2px solid var(--accent-light);
+      border-radius: 1rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    .trivia-options button:hover {
+      background: var(--accent-light);
+      transform: scale(1.02);
+    }
+    .trivia-options button.correct {
+      background: #d1fae5;
+      color: #065f46;
+      border-color: #10b981;
+    }
+    .trivia-options button.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      border-color: #ef4444;
+    }
+    #trivia-feedback {
+      text-align: center;
+      font-size: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    #trivia-next {
+      display: none;
+      margin: 0 auto;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    #trivia-next:hover {
+      transform: translateY(-3px);
+    }
+    /* Word Game */
+    .wordgame-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .wordgame-header span {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    #wordgame-letters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    #wordgame-letters div {
+      width: 3rem;
+      height: 3rem;
+      background: var(--gradient);
+      color: white;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.75rem;
+      box-shadow: var(--shadow);
+    }
+    #wordgame-input {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 2px solid var(--accent-light);
+      border-radius: 0.75rem;
+      background: var(--card-bg);
+      color: var(--text-primary);
+      outline: none;
+    }
+    #wordgame-input:focus {
+      border-color: var(--accent);
+    }
+    #wordgame-submit {
+      position: absolute;
+      right: 0.5rem;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0.5rem;
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .wordgame-input-wrapper {
+      position: relative;
+      margin-bottom: 1rem;
+    }
+    #wordgame-found {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      min-height: 2rem;
+    }
+    #wordgame-found span {
+      padding: 0.5rem 1rem;
+      background: var(--gradient);
+      color: white;
+      border-radius: 1rem;
+      font-size: 0.9rem;
+    }
+    /* Memory Game */
+    .memory-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .memory-header span {
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+    #memory-board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+    .memory-card {
+      perspective: 1000px;
+      aspect-ratio: 1;
+    }
+    .memory-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transition: transform 0.5s;
+      transform-style: preserve-3d;
+    }
+    .memory-card.flipped .memory-card-inner {
+      transform: rotateY(180deg);
+    }
+    .memory-card-front, .memory-card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow);
+    }
+    .memory-card-front {
+      background: var(--card-bg);
+      border: 2px solid var(--accent-light);
+    }
+    .memory-card-back {
+      background: var(--gradient);
+      color: white;
+      transform: rotateY(180deg);
+      font-size: 2rem;
+    }
+    #memory-feedback {
+      text-align: center;
+      font-size: 1.25rem;
+      margin: 1.5rem 0;
+    }
+    /* Back Button */
+    #back-to-menu {
+      display: block;
+      margin: 2rem auto;
+      padding: 0.75rem 2rem;
+      font-size: 1rem;
+      background: var(--gradient);
+      color: white;
+      border: none;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    #back-to-menu:hover {
+      transform: translateY(-3px);
+    }
+    /* Animations */
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-4px); }
+      75% { transform: translateX(4px); }
+    }
+    .animate-shake {
+      animation: shake 0.3s ease-in-out;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .animate-pulse-slow {
+      animation: pulse 2s infinite;
+    }
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 10px;
+      background: var(--accent);
+      opacity: 0.8;
+      z-index: 9999;
+      animation: confetti-fall 4s ease-in-out forwards;
+    }
+    @keyframes confetti-fall {
+      0% { transform: translateY(-100vh) rotate(0deg); opacity: 0.8; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    /* Feedback */
+    .feedback {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem 2rem;
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+      font-size: 1rem;
+      z-index: 1000;
+    }
+    .feedback.success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .feedback.error {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    /* Responsive */
+    @media (max-width: 640px) {
+      header h1 {
+        font-size: 2.5rem;
+      }
+      .game-card h3 {
+        font-size: 1.25rem;
+      }
+      #trivia-question {
+        font-size: 1.5rem;
+      }
+      .memory-card-back {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="theme-default">
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1 class="animate__animated animate__fadeIn">Family Quiz Night</h1>
+      <p>Fun games for everyone to enjoy!</p>
+      <div class="bounce-icon">
+        <svg width="40" height="40" fill="var(--text-primary)" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 10-1.414-1.414L11 10.586V7z" clip-rule="evenodd"></path>
+        </svg>
+      </div>
+    </header>
+
+    <!-- Theme Selector -->
+    <div class="theme-selector">
+      <button id="theme-default">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"></path></svg>
+        Default
+      </button>
+      <button id="theme-night">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+        Night
+      </button>
+      <button id="theme-fun">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z" clip-rule="evenodd"></path></svg>
+        Fun
+      </button>
+    </div>
+
+    <!-- Game Selection -->
+    <div id="game-selection" class="game-selection">
+      <div class="game-card" data-game="trivia">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+          <div class="icon">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3>Trivia Challenge</h3>
+        </div>
+        <p>Test your knowledge with fun trivia questions for all ages!</p>
+        <div class="details">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+          5 questions
+        </div>
+      </div>
+      <div class="game-card" data-game="wordgame">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+          <div class="icon">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3>Word Game</h3>
+        </div>
+        <p>Create words from given letters in a race against time!</p>
+        <div class="details">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+          60 seconds
+        </div>
+      </div>
+      <div class="game-card" data-game="memory">
+        <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+          <div class="icon">
+            <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v10a2 2 0 01-2 2H5a2 2 0 01-2-2V5zm11 1H6v8h8V6z" clip-rule="evenodd"></path></svg>
+          </div>
+          <h3>Memory Match</h3>
+        </div>
+        <p>Find matching pairs to test your memory skills!</p>
+        <div class="details">
+          <svg width="16" height="16" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"></path></svg>
+          8 pairs
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Area -->
+    <div id="game-area" class="game-area">
+      <!-- Trivia Game -->
+      <div id="trivia-game" style="display: none;">
+        <div class="trivia-header">
+          <div>
+            <span>Question: </span>
+            <span id="question-number">1</span>/<span id="total-questions">5</span>
+          </div>
+          <div>
+            <span>Score: </span>
+            <span id="trivia-score">0</span>
+          </div>
+        </div>
+        <div class="game-panel">
+          <div style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <div class="icon">
+              <svg width="24" height="24" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-3a1 1 0 00-.867.5 1 1 0 11-1.731-1A3 3 0 0113 8a3.001 3.001 0 01-2 2.83V11a1 1 0 11-2 0v-1a1 1 0 011-1 1 1 0 100-2zm0 8a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd"></path></svg>
+            </div>
+            <h3 id="trivia-question">Question goes here?</h3>
+          </div>
+          <div class="trivia-options" id="trivia-options"></div>
+        </div>
+        <div id="trivia-feedback"></div>
+        <button id="trivia-next">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+          Next Question
+        </button>
+      </div>
+
+      <!-- Word Game -->
+      <div id="wordgame-game" style="display: none;">
+        <div class="wordgame-header">
+          <div>
+            <span>Time: </span>
+            <span id="wordgame-timer">60</span>s
+            <div style="width: 100px; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-top: 0.25rem;">
+              <div id="timer-progress" style="width: 100%; height: 100%; background: var(--accent); transition: width 1s linear;"></div>
+            </div>
+          </div>
+          <div>
+            <span>Score: </span>
+            <span id="wordgame-score">0</span>
+          </div>
+        </div>
+        <div class="game-panel">
+          <h3 style="text-align: center; margin-bottom: 1.5rem;">Make words using these letters:</h3>
+          <div id="wordgame-letters"></div>
+          <div class="wordgame-input-wrapper">
+            <input type="text" id="wordgame-input" placeholder="Type your word here...">
+            <button id="wordgame-submit">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.707l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"></path></svg>
+            </button>
+          </div>
+          <div style="text-align: center; font-size: 0.85rem; color: var(--text-primary); opacity: 0.6;">Words must be at least 3 letters long</div>
+        </div>
+        <div style="margin-top: 1.5rem;">
+          <h4 style="display: flex; align-items: center; margin-bottom: 1rem;">
+            <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+            Words Found:
+          </h4>
+          <div id="wordgame-found"></div>
+        </div>
+      </div>
+
+      <!-- Memory Game -->
+      <div id="memory-game" style="display: none;">
+        <div class="memory-header">
+          <div>
+            <span>Moves: </span>
+            <span id="memory-moves">0</span>
+          </div>
+          <div>
+            <span>Pairs Found: </span>
+            <span id="memory-pairs">0</span>/8
+          </div>
+        </div>
+        <div id="memory-board"></div>
+        <div id="memory-feedback"></div>
+      </div>
+
+      <!-- Back Button -->
+      <button id="back-to-menu">
+        <svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+        Back to Menu
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // Game Data
+    const triviaQuestions = [
+      { question: "Which planet is known as the Red Planet?", options: ["Venus", "Mars", "Jupiter", "Saturn"], answer: "Mars" },
+      { question: "How many legs does a spider have?", options: ["6", "8", "10", "12"], answer: "8" },
+      { question: "What is the largest mammal in the world?", options: ["Elephant", "Giraffe", "Blue Whale", "Hippopotamus"], answer: "Blue Whale" },
+      { question: "What is the capital city of France?", options: ["London", "Rome", "Berlin", "Paris"], answer: "Paris" },
+      { question: "Which of these is not a fruit?", options: ["Apple", "Carrot", "Banana", "Orange"], answer: "Carrot" },
+      { question: "What is the main ingredient in guacamole?", options: ["Tomato", "Avocado", "Onion", "Pepper"], answer: "Avocado" },
+      { question: "How many colors are in a rainbow?", options: ["5", "6", "7", "8"], answer: "7" },
+      { question: "Which animal is known as the 'King of the Jungle'?", options: ["Tiger", "Elephant", "Lion", "Gorilla"], answer: "Lion" }
+    ];
+    const wordGameLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    const memoryEmojis = ["🐶", "🐱", "🐭", "🐹", "🐰", "🦊", "🐻", "🐼", "🦁", "🐮", "🐷", "🐸"];
+    const validWords = ["CAT", "DOG", "BAT", "RAT", "MAT", "HAT", "BALL", "TALL", "FALL", "WALL", "BIG", "PIG", "DIG", "FIG", "BET", "GET", "LET", "MET", "NET", "PET", "SET", "WET", "BIT", "FIT", "HIT", "KIT", "LIT", "PIT", "SIT", "COT", "DOT", "GOT", "HOT", "JOT", "LOT", "NOT", "POT", "ROT", "SOT", "TOT", "BUT", "CUT", "GUT", "HUT", "JUT", "NUT", "PUT", "RUT", "TUT", "EAT", "FAT", "PAT", "SAT", "TAT", "VAT", "JET", "VET", "YET", "MIT", "TIT", "WIT", "ZIT", "OUT"];
+
+    // DOM Elements
+    const gameSelection = document.getElementById("game-selection");
+    const gameArea = document.getElementById("game-area");
+    const triviaGame = document.getElementById("trivia-game");
+    const wordgameGame = document.getElementById("wordgame-game");
+    const memoryGame = document.getElementById("memory-game");
+    const backToMenu = document.getElementById("back-to-menu");
+
+    // Theme Selectors
+    document.getElementById("theme-default").addEventListener("click", () => setTheme("default"));
+    document.getElementById("theme-night").addEventListener("click", () => setTheme("night"));
+    document.getElementById("theme-fun").addEventListener("click", () => setTheme("fun"));
+
+    function setTheme(theme) {
+      document.body.className = `theme-${theme}`;
+      if (currentGame === "memory") updateMemoryCards();
+    }
+
+    // Game Selection
+    let currentGame = null;
+    document.querySelectorAll(".game-card").forEach(card => {
+      card.addEventListener("click", () => {
+        currentGame = card.getAttribute("data-game");
+        gameSelection.style.display = "none";
+        gameArea.classList.add("active");
+        triviaGame.style.display = currentGame === "trivia" ? "block" : "none";
+        wordgameGame.style.display = currentGame === "wordgame" ? "block" : "none";
+        memoryGame.style.display = currentGame === "memory" ? "block" : "none";
+        if (currentGame === "trivia") startTriviaGame();
+        else if (currentGame === "wordgame") startWordGame();
+        else if (currentGame === "memory") startMemoryGame();
+      });
+    });
+
+    // Back Button
+    backToMenu.addEventListener("click", () => {
+      gameArea.classList.remove("active");
+      gameSelection.style.display = "grid";
+      triviaGame.style.display = "none";
+      wordgameGame.style.display = "none";
+      memoryGame.style.display = "none";
+      resetAllGames();
+    });
+
+    function resetAllGames() {
+      currentQuestion = 0;
+      triviaScore = 0;
+      clearInterval(wordGameTimer);
+      foundWords = [];
+      memoryMoves = 0;
+      memoryPairsFound = 0;
+      flippedCards = [];
+      matchedCards = [];
+    }
+
+    // --- TRIVIA GAME ---
+    let currentQuestion = 0;
+    let triviaScore = 0;
+    let shuffledQuestions = [];
+
+    function startTriviaGame() {
+      currentQuestion = 0;
+      triviaScore = 0;
+      document.getElementById("trivia-score").textContent = "0";
+      shuffledQuestions = [...triviaQuestions].sort(() => 0.5 - Math.random()).slice(0, 5);
+      document.getElementById("total-questions").textContent = shuffledQuestions.length;
+      loadTriviaQuestion();
+    }
+
+    function loadTriviaQuestion() {
+      const question = shuffledQuestions[currentQuestion];
+      document.getElementById("question-number").textContent = currentQuestion + 1;
+      document.getElementById("trivia-question").textContent = question.question;
+      const optionsContainer = document.getElementById("trivia-options");
+      optionsContainer.innerHTML = "";
+      const shuffledOptions = [...question.options].sort(() => 0.5 - Math.random());
+      shuffledOptions.forEach(option => {
+        const button = document.createElement("button");
+        button.textContent = option;
+        button.addEventListener("click", () => checkTriviaAnswer(option, button));
+        optionsContainer.appendChild(button);
+      });
+      document.getElementById("trivia-next").style.display = "none";
+      document.getElementById("trivia-feedback").innerHTML = "";
+    }
+
+    function checkTriviaAnswer(selectedOption, selectedButton) {
+      const question = shuffledQuestions[currentQuestion];
+      const feedback = document.getElementById("trivia-feedback");
+      const nextButton = document.getElementById("trivia-next");
+      document.querySelectorAll("#trivia-options button").forEach(button => {
+        button.disabled = true;
+        if (button.textContent === question.answer) {
+          button.classList.add("correct");
+        } else if (button.textContent === selectedOption && selectedOption !== question.answer) {
+          button.classList.add("wrong");
+        }
+      });
+      if (selectedOption === question.answer) {
+        triviaScore++;
+        document.getElementById("trivia-score").textContent = triviaScore;
+        feedback.innerHTML = `<span style="color: #10b981; font-weight: 600;">Correct! 🎉</span> ${getRandomCongratulation()}`;
+        createConfetti();
+      } else {
+        feedback.innerHTML = `<span style="color: #ef4444; font-weight: 600;">Wrong!</span> The correct answer is <span style="font-weight: 600;">${question.answer}</span>.`;
+      }
+      if (currentQuestion < shuffledQuestions.length - 1) {
+        nextButton.style.display = "block";
+        nextButton.onclick = () => {
+          currentQuestion++;
+          loadTriviaQuestion();
+        };
+      } else {
+        const percentage = Math.round((triviaScore / shuffledQuestions.length) * 100);
+        let message = percentage === 100 ? `Perfect score! 🎉 You got ${triviaScore}/${shuffledQuestions.length} correct!` :
+                      percentage >= 80 ? `Great job! 👍 You got ${triviaScore}/${shuffledQuestions.length} correct!` :
+                      percentage >= 60 ? `Good effort! 😊 You got ${triviaScore}/${shuffledQuestions.length} correct.` :
+                      `Keep practicing! 🤓 You got ${triviaScore}/${shuffledQuestions.length} correct.`;
+        feedback.innerHTML = `<div style="font-weight: 600; font-size: 1.5rem;">Game Over!</div><div>${message}</div>`;
+        nextButton.innerHTML = `<svg width="20" height="20" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"></path></svg> Play Again`;
+        nextButton.style.display = "block";
+        nextButton.onclick = () => {
+          currentQuestion = 0;
+          triviaScore = 0;
+          document.getElementById("trivia-score").textContent = "0";
+          startTriviaGame();
+        };
+      }
+    }
+
+    function getRandomCongratulation() {
+      const congrats = ["Awesome!", "Brilliant!", "You're a genius!", "Well done!", "Perfect!", "Excellent!", "Fantastic!", "Superb!", "Terrific!", "Wonderful!"];
+      return congrats[Math.floor(Math.random() * congrats.length)];
+    }
+
+    // --- WORD GAME ---
+    let wordGameTimer;
+    let gameLetters = [];
+    let foundWords = [];
+    let timeLeft = 60;
+
+    function startWordGame() {
+      document.getElementById("wordgame-score").textContent = "0";
+      timeLeft = 60;
+      document.getElementById("wordgame-timer").textContent = timeLeft;
+      document.getElementById("wordgame-found").innerHTML = "";
+      document.getElementById("wordgame-input").value = "";
+      document.getElementById("wordgame-input").disabled = false;
+      document.getElementById("wordgame-submit").disabled = false;
+      document.getElementById("timer-progress").style.width = "100%";
+      foundWords = [];
+      gameLetters = [];
+      const vowels = "AEIOU";
+      const consonants = "BCDFGHJKLMNPQRSTVWXYZ";
+      for (let i = 0; i < 4; i++) gameLetters.push(vowels.charAt(Math.floor(Math.random() * vowels.length)));
+      for (let i = 0; i < 8; i++) gameLetters.push(consonants.charAt(Math.floor(Math.random() * consonants.length)));
+      gameLetters = gameLetters.sort(() => 0.5 - Math.random());
+      const lettersContainer = document.getElementById("wordgame-letters");
+      lettersContainer.innerHTML = "";
+      gameLetters.forEach(letter => {
+        const letterBox = document.createElement("div");
+        letterBox.textContent = letter;
+        lettersContainer.appendChild(letterBox);
+      });
+      clearInterval(wordGameTimer);
+      wordGameTimer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("wordgame-timer").textContent = timeLeft;
+        document.getElementById("timer-progress").style.width = `${(timeLeft / 60) * 100}%`;
+        if (timeLeft <= 10) document.getElementById("wordgame-timer").classList.add("animate-pulse-slow");
+        if (timeLeft <= 0) {
+          clearInterval(wordGameTimer);
+          endWordGame();
+        }
+      }, 1000);
+      document.getElementById("wordgame-submit").onclick = submitWord;
+      const inputField = document.getElementById("wordgame-input");
+      inputField.onkeypress = (e) => {
+        if (e.key === "Enter") submitWord();
+      };
+      inputField.focus();
+    }
+
+    function submitWord() {
+      const input = document.getElementById("wordgame-input");
+      const word = input.value.trim().toUpperCase();
+      if (word.length < 3) {
+        showFeedback("Words must be at least 3 letters long!", false);
+        shakeElement(input);
+        return;
+      }
+      if (foundWords.includes(word)) {
+        showFeedback(`You already found "${word}"!`, false);
+        shakeElement(input);
+        return;
+      }
+      if (!validWords.includes(word)) {
+        showFeedback(`"${word}" is not a valid word!`, false);
+        shakeElement(input);
+        return;
+      }
+      const letterCounts = {};
+      gameLetters.forEach(letter => {
+        letterCounts[letter] = (letterCounts[letter] || 0) + 1;
+      });
+      let validWord = true;
+      for (let i = 0; i < word.length; i++) {
+        const letter = word[i];
+        if (!letterCounts[letter] || letterCounts[letter] <= 0) {
+          validWord = false;
+          break;
+        }
+        letterCounts[letter]--;
+      }
+      if (validWord) {
+        foundWords.push(word);
+        document.getElementById("wordgame-score").textContent = foundWords.length;
+        const foundContainer = document.getElementById("wordgame-found");
+        const wordChip = document.createElement("span");
+        wordChip.textContent = word;
+        foundContainer.appendChild(wordChip);
+        showFeedback(`Great job! "${word}" is correct!`, true);
+        input.value = "";
+        input.focus();
+        if (timeLeft < 55) {
+          timeLeft += 5;
+          document.getElementById("wordgame-timer").textContent = timeLeft;
+          document.getElementById("timer-progress").style.width = `${(timeLeft / 60) * 100}%`;
+          if (timeLeft > 10) document.getElementById("wordgame-timer").classList.remove("animate-pulse-slow");
+        }
+      } else {
+        showFeedback(`You can't make "${word}" with these letters!`, false);
+        shakeElement(input);
+      }
+    }
+
+    function showFeedback(message, isSuccess) {
+      const feedback = document.createElement("div");
+      feedback.textContent = message;
+      feedback.className = `feedback ${isSuccess ? "success" : "error"} animate__animated animate__fadeInUp`;
+      document.body.appendChild(feedback);
+      setTimeout(() => {
+        feedback.classList.add("animate__fadeOut");
+        setTimeout(() => feedback.remove(), 500);
+      }, 3000);
+    }
+
+    function shakeElement(element) {
+      element.classList.add("animate-shake");
+      setTimeout(() => element.classList.remove("animate-shake"), 300);
+    }
+
+    function endWordGame() {
+      const input = document.getElementById("wordgame-input");
+      input.disabled = true;
+      document.getElementById("wordgame-submit").disabled = true;
+      const lettersContainer = document.getElementById("wordgame-letters");
+      lettersContainer.innerHTML = `
+        <div style="text-align: center; padding: 2rem; background: var(--card-bg); border-radius: 1.5rem; box-shadow: var(--shadow);">
+          <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Game Over!</div>
+          <div style="font-size: 1.25rem; margin-bottom: 1rem;">You found ${foundWords.length} word${foundWords.length !== 1 ? 's' : ''}!</div>
+          <div style="font-size: 0.9rem; opacity: 0.6;">Refresh the page to play again</div>
+        </div>
+      `;
+      if (foundWords.length > 0) {
+        const sortedWords = [...foundWords].sort((a, b) => b.length - a.length);
+        const longestWord = sortedWords[0];
+        showFeedback(`Your longest word was "${longestWord}" (${longestWord.length} letters)!`, true);
+      }
+    }
+
+    // --- MEMORY GAME ---
+    let memoryMoves = 0;
+    let memoryPairsFound = 0;
+    let flippedCards = [];
+    let matchedCards = [];
+    let memoryCards = [];
+
+    function startMemoryGame() {
+      memoryMoves = 0;
+      memoryPairsFound = 0;
+      flippedCards = [];
+      matchedCards = [];
+      document.getElementById("memory-moves").textContent = "0";
+      document.getElementById("memory-pairs").textContent = "0";
+      document.getElementById("memory-feedback").innerHTML = "";
+      let emojis = [...memoryEmojis].sort(() => 0.5 - Math.random()).slice(0, 8);
+      memoryCards = [...emojis, ...emojis];
+      memoryCards = shuffleArray(memoryCards);
+      const board = document.getElementById("memory-board");
+      board.innerHTML = "";
+      memoryCards.forEach((emoji, index) => {
+        const cardContainer = document.createElement("div");
+        cardContainer.className = "memory-card";
+        cardContainer.setAttribute("data-card-index", index);
+        const cardInner = document.createElement("div");
+        cardInner.className = "memory-card-inner";
+        const cardFront = document.createElement("div");
+        cardFront.className = "memory-card-front";
+        const cardBack = document.createElement("div");
+        cardBack.className = "memory-card-back";
+        cardBack.textContent = emoji;
+        cardInner.appendChild(cardFront);
+        cardInner.appendChild(cardBack);
+        cardContainer.appendChild(cardInner);
+        cardContainer.addEventListener("click", () => flipCard(cardContainer));
+        board.appendChild(cardContainer);
+      });
+    }
+
+    function updateMemoryCards() {
+      document.querySelectorAll(".memory-card").forEach(card => {
+        const front = card.querySelector(".memory-card-front");
+        const back = card.querySelector(".memory-card-back");
+        front.style.background = "var(--card-bg)";
+        back.style.background = "var(--gradient)";
+      });
+    }
+
+    function flipCard(card) {
+      if (flippedCards.includes(card) || matchedCards.includes(card) || flippedCards.length >= 2) return;
+      card.classList.add("flipped");
+      flippedCards.push(card);
+      if (flippedCards.length === 2) {
+        memoryMoves++;
+        document.getElementById("memory-moves").textContent = memoryMoves;
+        const [card1, card2] = flippedCards;
+        const emoji1 = memoryCards[card1.getAttribute("data-card-index")];
+        const emoji2 = memoryCards[card2.getAttribute("data-card-index")];
+        if (emoji1 === emoji2) {
+          matchedCards.push(card1, card2);
+          flippedCards = [];
+          memoryPairsFound++;
+          document.getElementById("memory-pairs").textContent = memoryPairsFound;
+          if (memoryPairsFound === 8) {
+            const feedback = document.getElementById("memory-feedback");
+            let message = memoryMoves <= 16 ? `Amazing! 🏆 You completed the game in ${memoryMoves} moves!` :
+                          memoryMoves <= 24 ? `Great job! 👍 You completed the game in ${memoryMoves} moves.` :
+                          `Good effort! 😊 You completed the game in ${memoryMoves} moves.`;
+            feedback.innerHTML = `
+              <div style="padding: 2rem; background: var(--card-bg); border-radius: 1.5rem; box-shadow: var(--shadow); text-align: center;">
+                <div style="font-size: 1.5rem; font-weight: 600; margin-bottom: 1rem;">Congratulations!</div>
+                <div style="font-size: 1.25rem; margin-bottom: 1rem;">${message}</div>
+                <button id="memory-play-again" style="padding: 0.75rem 2rem; background: var(--gradient); color: white; border: none; border-radius: 1rem; cursor: pointer;">Play Again</button>
+              </div>
+            `;
+            document.getElementById("memory-play-again").onclick = startMemoryGame;
+            createConfetti();
+          }
+        } else {
+          setTimeout(() => {
+            card1.classList.remove("flipped");
+            card2.classList.remove("flipped");
+            flippedCards = [];
+          }, 1000);
+        }
+      }
+    }
+
+    // Helper Functions
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function createConfetti() {
+      for (let i = 0; i < 100; i++) {
+        const confetti = document.createElement("div");
+        confetti.className = "confetti";
+        confetti.style.left = `${Math.random() * 100}vw`;
+        confetti.style.width = `${Math.random() * 8 + 4}px`;
+        confetti.style.height = `${Math.random() * 8 + 4}px`;
+        confetti.style.background = getRandomColor();
+        confetti.style.animationDuration = `${Math.random() * 3 + 2}s`;
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    function getRandomColor() {
+      const colors = ["#3b82f6", "#f87171", "#10b981", "#f59e0b", "#8b5cf6", "#ec4899"];
+      return colors[Math.floor(Math.random() * colors.length)];
+    }
+  </script>
+</body>
+</html>
